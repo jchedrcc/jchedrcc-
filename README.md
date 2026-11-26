@@ -1,4 +1,4 @@
-# jchedrcc-
+cc- jchedrcc-
 Aspiration Publishing Trust
 <div align="center">
   <h1>Welcome to My GitHub Profile 👋</h1>
@@ -43,6 +43,6 @@ Aspiration Publishing Trust
 ### 📊 GitHub Activity
 
 <div align="center">
-  <img height="165em" src="https://github-readme-stats.vercel.app/api?username=YOUR_GITHUB_USERNAME&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
-  <img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_GITHUB_USERNAME&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
+  <img height="165em" src="https://github-readme-stats.vercel.app/api?username=jchedrcc-&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
+  <img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=jchedrcc-&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
 </div>
