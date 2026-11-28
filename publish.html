@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aspiration Publishing Trust (A Not-for-Profit Organization)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for the Search Icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #202124;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    /* Top Bar */
+    .publisher-bar {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 8px 0;
+    }
+    .publisher-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #5f6368;
+    }
+    /* Colorful Professional Navbar */
+    .navbar {
+      background: linear-gradient(90deg, #1a73e8 0%, #1557b0 100%) !important;
+      border-bottom: none;
+      padding: 0.6rem 0;
+    }
+    .navbar .nav-link {
+      color: rgba(255, 255, 255, 0.85) !important;
+      transition: color 0.2s ease, background-color 0.2s ease;
+      border-radius: 4px;
+    }
+    .navbar .nav-link:hover {
+      color: #ffffff !important;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .navbar .nav-link.admin-login {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+    .navbar .nav-link.admin-login:hover {
+      color: #ffffff !important;
+    }
+    .navbar-toggler {
+      border-color: rgba(255, 255, 255, 0.5) !important;
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.85)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+    }
+    /* Google-Style Search Utility Adjustments */
+    .search-container {
+      max-width: 400px;
+      width: 100%;
+    }
+    .search-input {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px 0 0 24px;
+      padding: 0.4rem 1rem;
+      font-size: 0.9rem;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .search-input:focus {
+      background-color: #ffffff;
+      color: #202124;
+      border-color: #ffffff;
+      box-shadow: none;
+    }
+    .search-btn {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-left: none;
+      border-radius: 0 24px 24px 0;
+      background-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 0 1.1rem;
+    }
+    .search-btn:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
+    /* Cards & Content */
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: none;
+      transition: box-shadow 0.2s ease-in-out;
+      background: #ffffff;
+    }
+    .card:hover {
+      box-shadow: 0 1px 6px rgba(32,33,36,0.1);
+    }
+    .card-title {
+      color: #1a73e8;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #202124;
+      margin-bottom: 1.25rem;
+    }
+    .announcement-box {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .announcement-box li {
+      margin-bottom: 0.75rem;
+      color: #3c4043;
+    }
+    /* Highlight for search results */
+    mark {
+      background-color: #fff066;
+      padding: 0;
+    }
+    footer {
+      background-color: #ffffff;
+      border-top: 1px solid #e0e0e0;
+      color: #70757a;
+      font-size: 0.85rem;
+      padding: 1.5rem 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP PUBLISHER BAND -->
+  <div class="publisher-bar">
+    <div class="container d-flex align-items-center">
+      <span class="publisher-text" style="font-size: 1.75rem;"><strong>Aspiration Publishing Trust</strong> (Publish with Us)</span>
+     </div>
+  </div>
+
+  <!-- COLORFUL NAV & SEARCH BAR -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center">
+      
+      <!-- Left-aligned Nav Buttons -->
+      <div class="d-flex align-items-center">
+        <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsMain">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsMain">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+            <li class="nav-item"><a class="nav-link fw-medium px-3" href="/contact.html">Contact Us</a></li>
+            <li class="nav-item"><a class="nav-link fw-medium px-3" href="/index.html">Home</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right-Aligned Google-Style Search Bar inside the bar -->
+      <div class="search-container d-flex mt-2 mt-lg-0">
+        <input type="text" id="pageSearchInput" class="form-control search-input" placeholder="Search this page..." aria-label="Search">
+        <button class="btn search-btn" type="button" onclick="searchPage()">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="container mt-5">
+    <div id="searchableArea" class="row">
+
+      <!-- TOP ROW: FOUR COLUMN PUBLICATIONS -->
+      <div class="col-12 mb-5">
+        <h4 class="section-title">Our Publications - Books, Journals, Conference Proceedings, White Papers and Many More</h4>
+        <h5 class="card-title text-primary border-bottom pb-2 mb-3">
+          <i class="bi bi-patch-check-fill me-2"></i>Publications
+        </h5> 
+
+        <div class="row">
+          <!-- Column 1: Books -->
+          <div class="col-md-6 col-lg-3 mb-4">
+            <div class="d-flex align-items-start">
+              <div class="bg-light rounded p-2 me-3 text-primary">
+                <i class="bi bi-book fs-4"></i> 
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Book Series</h6>
+                <p class="card-text text-muted small mb-2">Explore our published books and curated academic series.</p>
+                <p class="card-text text-muted small mb-2"><strong>1. Advances in Interdisciplinary Systems & Computing <br>ISBN: 978-81-686448-8-5</strong></p>
+                <p class="card-text text-muted small mb-0"><strong>2. Studies in Distributed System and Digital Innovation <br>ISBN: 978-0-13-469291-3</strong></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Journals -->
+          <div class="col-md-6 col-lg-3 mb-4">
+            <div class="d-flex align-items-start">
+              <div class="bg-light rounded p-2 me-3 text-primary">
+                <i class="bi bi-journal-text fs-4"></i> 
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Journals</h6>
+                <p class="card-text text-muted small mb-0">
+                 <a class="text-decoration-none fw-bold fs-4" href="/ijcai.html">IJCAI</a> (Interdisciplinary Journal of Computing & AI)
+                </p>
+                <p class="card-text text-muted small mb-0">
+                 <a class="text-decoration-none fw-bold fs-4" href="/assets/img/publication/journals/aptus.html">APTUS</a> (APTUS – Journal of Cyber Governance and Digital Justice)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: White Papers -->
+          <div class="col-md-6 col-lg-3 mb-4">
+            <div class="d-flex align-items-start">
+              <div class="bg-light rounded p-2 me-3 text-primary">
+                <i class="bi bi-collection fs-4"></i> 
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">White Paper/Articles</h6>
+  <p class="card-text text-muted small mb-0">
+    <span class="fw-medium">White Paper/Articles:</span> AI in Education-White paper 
+ (<a class="text-decoration-none fw-medium" href="/assets/img/publication/whitepaper/AI in Education-White paper.pdf" target="_blank">PDF</a> | 
+    <a class="text-decoration-none fw-medium" href="/assets/img/publication/whitepaper/AI in Education-White paper.epub">EPUB</a>)
+
+ <li></li><span class="fw-medium">White Paper/Articles:</span> Cyber Analyticsr 
+    (<a class="text-decoration-none fw-medium" href="/assets/img/publication/whitepaper/cyber/cyberdefence-vol1.pdf" target="_blank">PDF</a> |)
+</p> </li>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 4: Conference Proceedings -->
+          <div class="col-md-6 col-lg-3 mb-4">
+            <div class="d-flex align-items-start">
+              <div class="bg-light rounded p-2 me-3 text-primary">
+                <i class="bi bi-collection fs-4"></i> 
+              </div>
+              <div>
+                <h6 class="fw-bold mb-1">Conference Proceedings</h6>
+                <p class="card-text text-muted small mb-0">
+                  <a class="text-decoration-none fw-medium" href="">Conference Proceedings</a> from our latest global summits.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW: FULL WIDTH ANNOUNCEMENTS -->
+      <div class="col-12 mb-4">
+        <div class="announcement-box shadow-sm">
+          <h4 class="section-title"><i class="bi bi-megaphone me-2 text-danger"></i>Latest Announcements</h4>
+          <ul class="ps-3 small">
+            <li>IJCAI-Vol. 1 | Issue 1 (2026) — submissions closed (Publication: 30 April 2026).</li>
+            <li>IJCAI-Vol. 1 | Issue 2 (2026) — submissions open.</li>
+            <li>IJCAI-Special Issue on Generative AI (2026) — submissions open.</li>
+            <li>IJCAI-Special Issue on AI Leadership & Organizational Intelligence (2026) — submissions open.</li>
+          </ul>
+          <hr class="my-3">
+          <p class="mb-0 small text-muted">Submit via Microsoft CMT. See the <a href="submit.html" class="text-decoration-none text-primary fw-medium">Submission page</a> for details.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-5">
+    <div class="container text-center">
+      <p class="mb-1"><strong>Research Foundation — An initiative of Aspiration Publishing Trust</strong></p>
+      <p class="mb-0">© <span id="year"></span> Aspiration Publishing Trust</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    function searchPage() {
+      const searchInput = document.getElementById('pageSearchInput').value.trim();
+      const contentArea = document.getElementById('searchableArea');
+      removeHighlights(contentArea);
+      if (searchInput === "") return;
+      const regex = new RegExp(`(${escapeRegExp(searchInput)})`, 'gi');
+      highlightText(contentArea, regex);
+    }
+
+    function highlightText(element, regex) {
+      if (element.hasChildNodes()) {
+        element.childNodes.forEach(child => {
+          if (child.nodeType === 3) {
+            const match = child.nodeValue.match(regex);
+            if (match) {
+              const span = document.createElement('span');
+              span.innerHTML = child.nodeValue.replace(regex, '<mark>$1</mark>');
+              child.parentNode.replaceChild(span, child);
+            }
+          } else if (child.nodeType === 1 && child.nodeName !== 'SCRIPT' && child.nodeName !== 'STYLE') {
+            highlightText(child, regex);
+          }
+        });
+      }
+    }
+
+    function removeHighlights(element) {
+      const marks = element.querySelectorAll('mark');
+      marks.forEach(mark => {
+        const parent = mark.parentNode;
+        parent.replaceChild(document.createTextNode(mark.innerText), mark);
+        parent.normalize();
+      });
+    }
+
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    document.getElementById('pageSearchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchPage();
+      }
+    });
+  </script>
+</body>
+</html>

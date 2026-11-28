@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Editorial Service</title>
+    <!-- Include SheetJS Library for Excel & LibreOffice Calc Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Include JsBarcode Library for Dynamic Barcode Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Top control bar */
+        .page-controls {
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-controls button {
+            background-color: #0f2b46;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .page-controls button:hover {
+            background-color: #173d61;
+        }
+
+        /* Individual Actions Overlay Container */
+        .cert-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cert-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .btn-action {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #0f2b46;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .btn-print-single {
+            background-color: #fff;
+            color: #0f2b46;
+        }
+
+        .btn-print-single:hover {
+            background-color: #f0f4f8;
+        }
+
+        .btn-email-single {
+            background-color: #c5a059;
+            border-color: #c5a059;
+            color: #fff;
+        }
+
+        .btn-email-single:hover {
+            background-color: #b38f4b;
+        }
+
+        /* Wrapper for generated certificates */
+        #certificates-container {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Certificate Container: Calibrated for A4 Landscape aspect ratio screen views */
+        .certificate-container {
+            width: 1122px; 
+            height: 793px;
+            padding: 50px 80px;
+            background-color: #fffdf9; /* Elegant off-white/cream background */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Sophisticated Academic Border */
+        .outer-border {
+            position: absolute;
+            top: 30px;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            border: 5px solid #0f2b46; /* Deep Navy Blue */
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .inner-border {
+            position: absolute;
+            top: 40px;
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+            border: 1.5px solid #c5a059; /* Elegant Gold Accent */
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        /* Content Styling */
+        .header-title {
+            font-family: 'Cardo', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: #0f2b46;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            font-weight: 400;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        .recipient-name {
+            font-family: 'Cardo', serif;
+            font-size: 42px;
+            font-style: italic;
+            font-weight: 700;
+            color: #c5a059; /* Gold accent for the name */
+            margin: 20px 0;
+            border-bottom: 2px solid #0f2b46;
+            padding-bottom: 10px;
+            min-width: 65%;
+            display: inline-block;
+        }
+
+        .context-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            color: #2c3e50;
+            line-height: 1.8;
+            max-width: 860px;
+            margin: 0 auto;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .journal-name {
+            font-weight: 700;
+            color: #0f2b46;
+        }
+
+        .presentation-date {
+            font-size: 15px;
+            font-style: italic;
+            color: #555;
+            margin-top: 15px;
+        }
+
+        /* Bottom Row: Seal, Barcode, and Signatures */
+        .footer-section {
+            width: 95%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .signature-block {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .signature-line {
+            width: 100%;
+            border-top: 1px solid #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .signer-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f2b46;
+            margin: 2px 0;
+        }
+
+        .signer-title {
+            font-size: 12px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Middle Alignment Cluster */
+        .footer-center-cluster {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .certificate-seal {
+            width: 90px;
+            height: 90px;
+            border: 2px double #c5a059;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #c5a059;
+            font-weight: 700;
+            font-size: 24px;
+            font-family: 'Cardo', serif;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(197, 160, 89, 0.2);
+        }
+
+        .barcode-wrapper svg {
+            max-height: 40px;
+            display: block;
+        }
+
+        /* CSS Print Overrides - Forces precise fit on A4 Landscape */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 0; /* Clears standard header/footer layout margin */
+            }
+            html, body {
+                width: 297mm;
+                height: 210mm;
+                background-color: #fff; 
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+            }
+            .page-controls, .cert-actions { 
+                display: none !important; 
+            }
+            #certificates-container {
+                gap: 0 !important;
+                width: 100% !important;
+            }
+            .certificate-container { 
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 297mm !important;   /* Matches official A4 base dimensions */
+                height: 210mm !important;  /* Matches official A4 base dimensions */
+                page-break-after: always;
+                break-after: page;
+                box-sizing: border-box;
+                padding: 45px 80px !important; /* Slight padding normalization for printers */
+                background-color: #fffdf9 !important;
+                -webkit-print-color-adjust: exact; /* Compels browser to print background color/images */
+                print-color-adjust: exact;
+            }
+            body.printing-single #certificates-container > .cert-wrapper:not(.target-print) {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-controls">
+    <button onclick="window.print()">Print All Certificates</button>
+</div>
+
+<!-- Target wrapper where all certificates will be generated -->
+<div id="certificates-container"></div>
+
+<script>
+    // Individual Print Utility
+    function printSingleCertificate(buttonElement) {
+        const wrapper = buttonElement.closest('.cert-wrapper');
+        
+        // Add printing classes
+        document.body.classList.add('printing-single');
+        wrapper.classList.add('target-print');
+        
+        // Open print window
+        window.print();
+        
+        // Clean up classes after print dialog opens/closes
+        document.body.classList.remove('printing-single');
+        wrapper.classList.remove('target-print');
+    }
+
+    // Individual Email Utility (mailto client fallback)
+    function emailSingleCertificate(name, journal, emailAddress = "") {
+        const subject = encodeURIComponent(`Your Certificate of Editorial Service - ${journal}`);
+        const body = encodeURIComponent(`Dear ${name},\n\nThank you for your exceptional service and leadership as a Reviewer for ${journal}.\n\nYour formal Certificate of Editorial Service has been generated and is ready for download in your portal dashboard.\n\nBest regards,\nEditorial Office`);
+        
+        window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+    }
+
+    window.onload = function() {
+        
+ fetch('/assets/img/certificate/Reviewer Details.csv') 
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to load file from assets folder");
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+
+                    // Convert sheet rows into an array of JSON objects
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                    const container = document.getElementById('certificates-container');
+                    container.innerHTML = ''; // Clear out any previously generated content
+
+                    if (jsonData.length > 0) {
+                        jsonData.forEach((rowData, index) => {
+                            
+                            // Fallback placeholders if values are absent
+                            const name = rowData['name'] || '[Associate Editor\'s Full Name]';
+                            const journal = rowData['journal'] || '[Journal Name]';
+                            const field = rowData['field'] || '[Field of Study, e.g., Biomedical Engineering]';
+                            const day = rowData['day'] || '[Day]';
+                            const month = rowData['month'] || '[Month]';
+                            const year = rowData['year'] || '[Year]';
+                            const eic = rowData['eic'] || '[Editor-in-Chief Name]';
+                            const mgr = rowData['mgr'] || '[Managing Editor/Director Name]';
+                            const recipientEmail = rowData['email'] || ''; 
+
+                            // Unique Identity Fallback (If no custom ID column is present, uses a timestamp hash combined with index loop tracking)
+                            const certificateID = rowData['cert_id'] || `APT-${year}-${1000 + index}`;
+
+                            // Escape single quotes for use inside JS function strings safely
+                            const safeName = name.replace(/'/g, "\\'");
+                            const safeJournal = journal.replace(/'/g, "\\'");
+
+                            // Wrap certificate in a handling element container (.cert-wrapper)
+                            const certHTML = `
+                                <div class="cert-wrapper">
+                                    <div class="cert-actions">
+                                        <button class="btn-action btn-print-single" onclick="printSingleCertificate(this)">🖨️ Print Certificate</button>
+                                        <button class="btn-action btn-email-single" onclick="emailSingleCertificate('${safeName}', '${safeJournal}', '${recipientEmail}')">✉️ Notify via Email</button>
+                                    </div>
+                                    <div class="certificate-container">
+                                        <div class="outer-border"></div>
+                                        <div class="inner-border"></div>
+
+                                        <div>
+                                            <div class="header-title">Certificate of Scholarly Excellence</div>
+                                            <div class="subtitle">This certificate is gratefully awarded to</div>
+                                        </div>
+
+                                        <div class="recipient-name">${name}</div>
+
+                                        <div class="context-text">
+                                            for the exceptional service and leadership as a Reviewer for <br>
+                                            <span class="journal-name">${journal}</span> during the period of <strong>${year}</strong>.
+                                            <br><br>
+                                            In sincere recognition of your strategic Exceptional peer-review craftsmanship, masterful guidance of the peer-review process, and steadfast commitment to advancing pioneering scholarly research in the field of <strong>${field}</strong>.
+                                        </div>
+
+                                        <div class="presentation-date">
+                                            Presented on this <span>${day}</span> of <span>${month}</span>, <span>${year}</span>.
+                                        </div>
+
+                                        <div class="footer-section">
+                                            <div class="signature-block">
+                                                <div class="signature-line"></div>
+                                                <div class="signer-name">${eic}</div>
+                                                <div class="signer-title" style="font-size: 13px;"><strong>Editor-in-Chief</strong></div>
+                                                <div class="signer-title" style="font-size: 13px;"><strong>IJCAI</strong></div>
+                                            </div>
+
+                                            <div class="footer-center-cluster">
+                                                <div class="certificate-seal">
+                                                    <img src="/assets/img/Aspiration Logo.png" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="Seal">
+                                                </div>
+                                                <div class="barcode-wrapper">
+                                                    <!-- Unique canvas element targeting this record -->
+                                                    <svg id="barcode-render-${index}"></svg>
+                                                </div>
+                                            </div>
+
+                                            <div class="signature-block">
+                                                <div class="signature-line"></div>
+                                                <div class="signer-name">${mgr}</div>
+                                                <div class="signer-title" style="font-size: 13px;"><strong>Director</strong></div>
+                                                <div class="signer-title" style="font-size: 13px;"><strong>Aspiration Publishing Trust</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                            // Inject the block layout
+                            container.insertAdjacentHTML('beforeend', certHTML);
+
+                            // Dynamically render Code128 format barcode into target SVG
+                            JsBarcode(`#barcode-render-${index}`, "Aspiration Publishing Trust", {
+                                format: "CODE128",
+                                width: 1.2,
+                                height: 32,
+                                displayValue: true,
+                                fontSize: 10,
+                                background: "transparent",
+                                lineColor: "#0f2b46"
+                            });
+                        });
+                    } else {
+                        alert('The file contains no readable data rows.');
+                    }
+                };
+                reader.readAsArrayBuffer(blob); 
+            })
+            .catch(error => console.error("Error loading asset:", error));
+    };
+</script>
+
+</body>
+</html>

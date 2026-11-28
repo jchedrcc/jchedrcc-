@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJCAI Journal Analytics Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f9;margin:0;padding:20px}
+h1,h2,h3{color:#003366}
+.header{text-align:center}
+.dashboard,.row{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:20px 0}
+.card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);padding:18px;width:220px}
+.wide{width:430px}
+.metric{font-size:30px;font-weight:bold;text-align:center}
+.chartbox{width:420px;height:240px;margin:20px auto;background:#fff;padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+th{background:#003366;color:#fff;padding:8px}td{padding:8px;border-bottom:1px solid #ddd}
+input{width:100%;padding:10px}
+.listbox{width:48%;min-width:420px}
+</style>
+</head>
+<body>
+<div class="header"><h1>IJCAI Journal Analytics Dashboard</h1><p>Live Statistics from Zenodo Community</p></div>
+<div class="dashboard">
+<div class="card"><h3>Total Articles</h3><div id="totalArticles" class="metric">0</div></div>
+<div class="card"><h3>Total Views</h3><div id="totalViews" class="metric">0</div></div>
+<div class="card"><h3>Total Downloads</h3><div id="totalDownloads" class="metric">0</div></div>
+<div class="card"><h3>Average Downloads</h3><div id="avgDownloads" class="metric">0</div></div>
+</div>
+<div class="row">
+<div class="card wide"><h3>🏆 Top Viewed Paper</h3><div id="topViewedPaper"></div></div>
+<div class="card wide"><h3>📥 Top Downloaded Paper</h3><div id="topDownloadedPaper"></div></div>
+</div>
+<div class="row">
+<div class="listbox"><h3>📈 Top 5 Viewed Papers</h3><table><thead><tr><th>Paper</th><th>Views</th></tr></thead><tbody id="topViewedTable"></tbody></table></div>
+<div class="listbox"><h3>📥 Top 5 Downloaded Papers</h3><table><thead><tr><th>Paper</th><th>Downloads</th></tr></thead><tbody id="topDownloadedTable"></tbody></table></div>
+</div>
+<div class="chartbox"><canvas id="statsChart"></canvas></div>
+<p><input id="searchInput" placeholder="Search article title..."></p>
+<div id="loading">Loading...</div>
+<table id="recordsTable" style="display:none"><thead><tr><th>Title</th><th>Date</th><th>Views</th><th>Downloads</th><th>DOI</th></tr></thead><tbody id="recordsBody"></tbody></table>
+<script>
+let allRecords=[],chart;
+async function loadData(){
+ const r=await fetch("https://zenodo.org/api/records?q=communities:ijcai-journal&size=25");
+ const d=await r.json();
+ allRecords=d.hits.hits||[];
+ render(allRecords);
+}
+function render(records){
+ let tv=0,td=0;
+ records.forEach(x=>{tv+=x.stats?.unique_views||0;td+=x.stats?.unique_downloads||0;});
+ totalArticles.textContent=records.length;
+ totalViews.textContent=tv;
+ totalDownloads.textContent=td;
+ avgDownloads.textContent=Math.round(td/Math.max(records.length,1));
+ const viewed=[...records].sort((a,b)=>(b.stats?.unique_views||0)-(a.stats?.unique_views||0));
+ const down=[...records].sort((a,b)=>(b.stats?.unique_downloads||0)-(a.stats?.unique_downloads||0));
+ if(viewed.length){
+ topViewedPaper.innerHTML=`<b>${viewed[0].metadata.title}</b><br><br>👁 ${viewed[0].stats.unique_views}<br>📥 ${viewed[0].stats.unique_downloads}<br><a target="_blank" href="https://doi.org/${viewed[0].doi}">DOI</a>`;
+ topDownloadedPaper.innerHTML=`<b>${down[0].metadata.title}</b><br><br>📥 ${down[0].stats.unique_downloads}<br>👁 ${down[0].stats.unique_views}<br><a target="_blank" href="https://doi.org/${down[0].doi}">DOI</a>`;
+ }
+ topViewedTable.innerHTML=viewed.slice(0,5).map(r=>`<tr><td>${r.metadata.title}</td><td>${r.stats.unique_views||0}</td></tr>`).join("");
+ topDownloadedTable.innerHTML=down.slice(0,5).map(r=>`<tr><td>${r.metadata.title}</td><td>${r.stats.unique_downloads||0}</td></tr>`).join("");
+ drawTable(records);
+ loading.style.display='none';recordsTable.style.display='table';
+ if(chart)chart.destroy();
+ chart=new Chart(document.getElementById('statsChart'),{type:'bar',data:{labels:['Views','Downloads'],datasets:[{data:[tv,td]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+}
+function drawTable(records){
+ recordsBody.innerHTML=records.map(r=>`<tr><td>${r.metadata.title}</td><td>${r.metadata.publication_date||''}</td><td>${r.stats.unique_views||0}</td><td>${r.stats.unique_downloads||0}</td><td><a target="_blank" href="https://doi.org/${r.doi}">${r.doi}</a></td></tr>`).join("");
+}
+searchInput.addEventListener('keyup',e=>{const k=e.target.value.toLowerCase();drawTable(allRecords.filter(r=>r.metadata.title.toLowerCase().includes(k)));});
+loadData();
+setInterval(loadData,3600000);
+</script>
+</body></html>
